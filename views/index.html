@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Zoom</title>
+        <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
+        <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/superslide/superslides.css">
+        <link rel="stylesheet" href="css/fancybox/jquery.fancybox.css">
+        <link rel="stylesheet" href="css/nivo-lightbox/nivo-lightbox.css">
+        <link rel="stylesheet" href="css/themes/default/default.css">
+        <link rel="stylesheet" href="css/responsive.css">
+        <link rel="stylesheet" href="css/animate/animate.css">
+        <link rel="stylesheet" href="css/owl-carousel/owl.carousel.css">
+        <link rel="stylesheet" href="css/owl-carousel/owl.theme.css">
+        <link rel="stylesheet" href="css/owl-carousel/owl.transitions.css">
+        <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+        <link rel="stylesheet" href="css/sign.css">
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="https://unpkg.com/sweetalert2/dist/sweetalert2.all.min.js"></script>
+        <script src="js/jquery/jquery.js"></script>
+        <script src="js/script.js"></script>
+        <script src="js/bootstrap/bootstrap.min.js"></script>
+        <script src="js/fancybox/jquery.fancybox.pack.js"></script>
+        <script src="js/nivo-lightbox/nivo-lightbox.min.js"></script>
+        <script src="js/owl-carousel/owl.carousel.min.js"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBL6gbhsnCEt4FS9D6BBl3mZO1xy-NcwpE&sensor=false"></script>
+        <script src="js/jquery-easing/jquery.easing.1.3.js"></script>
+        <script src="js/superslide/jquery.superslides.js"></script>
+        <script src="js/wow/wow.min.js"></script>
+
+    </head>
+    <body>
+
+      <div class="form">
+          
+          <ul class="tab-group">
+            <li class="tab active"><a href="#signup">Sign Up</a></li>
+            <li class="tab"><a href="#login">Log In</a></li>
+          </ul>
+          
+          <div class="tab-content">
+            <div id="signup">   
+              <h1>Sign Up for Free</h1>
+              
+              <form>
+              
+              <div class="top-row">
+                <div class="field-wrap">
+                  <label>
+                    First Name<span class="req">*</span>
+                  </label>
+                  <input type="text" required autocomplete="off" id="FirstName"/>
+                </div>
+            
+                <div class="field-wrap">
+                  <label>
+                    Last Name<span class="req">*</span>
+                  </label>
+                  <input type="text"required autocomplete="off" id="LastName"/>
+                </div>
+              </div>
+              <div class="field-wrap">
+                <label>
+                  Email Address<span class="req">*</span>
+                </label>
+                <input type="email"required autocomplete="off" id="Email"/>
+              </div>
+              <div class="field-wrap">
+                <label>
+                  Set A Password<span class="req">*</span>
+                </label>
+                <input type="password"required autocomplete="off" id="Password"/>
+              </div>
+              <button type="button" class="button button-block" onclick="CreateUser()">Get Started</button>
+              </form>
+            </div>
+            <div id="login">   
+              <h1>Welcome Back!</h1>
+              <form>
+                <div class="field-wrap">
+                <label>
+                  Email Address<span class="req">*</span>
+                </label>
+                <input type="email"required autocomplete="off" id="loginEmail" />
+              </div>
+              
+              <div class="field-wrap">
+                <label>
+                  Password<span class="req">*</span>
+                </label>
+                <input type="password"required autocomplete="off" id="loginPassword" />
+              </div>
+              <p class="forgot"><a href="#">Forgot Password?</a></p>
+              <button type="button" class="button button-block" onclick="LogIn()" />Log In</button>
+              </form>
+            </div>
+          </div><!-- tab-content -->
+          <script type="text/javascript">
+          var AlertText = "";
+          function CreateUser()
+          {
+            console.log("Lol I am " + document.getElementById('Email').value);
+            if (document.getElementById('Email').value != "" && document.getElementById('Password').value != "" && 
+              document.getElementById('FirstName').value != "" && document.getElementById('LastName').value != "" && EmailCheck(document.getElementById('Email').value) && PasswordCheck(document.getElementById('Password').value) && checkForNonLetters(document.getElementById('FirstName').value) && checkForNonLetters(document.getElementById('LastName').value))
+            {
+                $.ajax({
+                    url: 'api/createuser?FirstName=' + document.getElementById('FirstName').value + '&LastName=' + document.getElementById('LastName').value + '&Email=' + document.getElementById('Email').value + '&Password=' + document.getElementById('Password').value,
+                    type: 'GET',
+                    success: function(response) {
+                        result = response;
+                        var status = response['status'];
+                        console.log("Here is the status " + response['token']);
+                        if (status == 200)
+                        {
+                            AlertText = "You have signed up successfully";
+                            sessionStorage.setItem('email', document.getElementById('Email').value);
+                            sessionStorage.setItem('token', response['token']);
+                            CreationSucceeded();
+                        }
+                        else
+                        {
+                            AlertText = response['error'];
+                            creationFailed();
+                        }
+                    }
+                });
+            }
+            else if (document.getElementById('Email').value != "" || EmailCheck(document.getElementById('Email').value))
+            {
+                AlertText = "Please enter a valid email";
+                creationFailed();
+            }
+            else if (document.getElementById('Password').value != "" || PasswordCheck(document.getElementById('Password').value))
+            {
+                AlertText = "Please enter another secure password";
+                creationFailed();
+            }
+            else if (document.getElementById('FirstName').value != "" || checkForNonLetters(document.getElementById('FirstName').value) )
+            {
+                AlertText = "Please enter a valid first name";
+                creationFailed();
+            }
+            else if (document.getElementById('LastName').value != "" || checkForNonLetters(document.getElementById('LastName').value))
+            {
+                AlertText = "Please enter a valid last name";
+                creationFailed();
+            }
+          }
+          function LogIn()
+          {
+            console.log("Lol I am " + document.getElementById('loginEmail').value);
+            if (document.getElementById('loginEmail').value != "" && document.getElementById('loginPassword').value != "" && EmailCheck(document.getElementById('loginEmail').value) && PasswordCheck(document.getElementById('loginPassword').value))
+            {
+                $.ajax({
+                    url: 'api/login?Email=' + document.getElementById('loginEmail').value + '&Password=' + document.getElementById('loginPassword').value,
+                    type: 'GET',
+                    success: function(response) {
+                        result = response;
+                        var status = response['status'];
+                        console.log("Here is the status " + response['token']);
+                        if (status == 200)
+                        {
+                            sessionStorage.setItem('email', document.getElementById('loginEmail').value);
+                            sessionStorage.setItem('token', response['token']);
+                            AlertText = "You have signed in successfully";
+                            CreationSucceeded();
+                        }
+                        else
+                        {
+                            AlertText = "Invalid Username or Password";
+                            creationFailed();
+                        }
+                    }
+                });
+            }
+            else
+            {
+                AlertText = "Invalid Username or Password. Please check your username and password.";
+                creationFailed();
+            }
+          }
+          function CreationSucceeded()
+          {
+            swal({
+              title: AlertText,
+              text: AlertText,
+              type: 'success',
+              showCancelButton: false,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Ok'
+            }).then(function () {
+                  document.location = "dashboard.html";
+            })
+          }
+          function creationFailed() 
+          {
+            swal({
+              title: "Failed",
+              text: AlertText,
+              icon: "error",
+              button: "OK",
+            });
+          }
+          function EmailCheck(key)
+          {
+            var regex = new RegExp("^[a-zA-Z0-9 , . @ \b]+$");
+            if (!regex.test(key)) 
+            {
+              return false;
+            }
+            else
+            {
+              return true;
+            }
+          }
+
+          function checkForNonNumbers(key) 
+          {
+            var regex = /[0-9 \b]/;
+            if(!regex.test(key)) 
+            {
+            return false;
+            }
+            else
+            {
+            return true;
+            }
+          }
+
+          function checkForNonLetters(key) 
+          {
+            var regex = new RegExp("^[a-zA-Z \b]+$");
+            if (!regex.test(key))
+            {
+              return false;
+            }
+            else
+            {
+              return true;
+            }
+          }
+
+          function PasswordCheck(key)
+          {
+            var regex = new RegExp("^[a-zA-Z0-9 , \b]+$");
+            if (!regex.test(key)) 
+            {
+              return false;
+            }
+            else
+            {
+              return true;
+            }
+          }
+          </script>
+    </div> <!-- /form -->
+      <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+        <script  src="js/sign.js"></script>
+    </body>
+</html>
