@@ -4,38 +4,20 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <title>Dashboard</title>
-
+        <title>Zoom UI Kit One Page Portfolios Template</title>
         <link href='http://fonts.googleapis.com/css?family=Raleway:400,700' rel='stylesheet' type='text/css'>
-        <!-- font awesome -->
         <link rel="stylesheet" href="css/font-awesome/css/font-awesome.min.css">
-        <!-- Bootstrap -->
         <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="css/superslide/superslides.css">
         <link rel="stylesheet" href="css/fancybox/jquery.fancybox.css">
         <link rel="stylesheet" href="css/nivo-lightbox/nivo-lightbox.css">
         <link rel="stylesheet" href="css/themes/default/default.css">
+        <link rel="stylesheet" href="css/style.css">
         <link rel="stylesheet" href="css/responsive.css">
         <link rel="stylesheet" href="css/animate/animate.css">
         <link rel="stylesheet" href="css/owl-carousel/owl.carousel.css">
         <link rel="stylesheet" href="css/owl-carousel/owl.theme.css">
         <link rel="stylesheet" href="css/owl-carousel/owl.transitions.css">
-        <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-        <link rel="stylesheet" href="css/MyWebsite.css">
-        <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-        <script  src="js/sign.js"></script>
-        <script src="js/jquery/jquery.js"></script>
-        <script src="js/script.js"></script>
-        <script src="js/bootstrap/bootstrap.min.js"></script>
-        <script src="js/fancybox/jquery.fancybox.pack.js"></script>
-        <script src="js/nivo-lightbox/nivo-lightbox.min.js"></script>
-        <script src="js/owl-carousel/owl.carousel.min.js"></script>
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBL6gbhsnCEt4FS9D6BBl3mZO1xy-NcwpE&sensor=false"></script>
-        <script src="js/jquery-easing/jquery.easing.1.3.js"></script>
-        <script src="js/superslide/jquery.superslides.js"></script>
-        <script src="js/wow/wow.min.js"></script>
     </head>
     <body>
 		<div class='preloader'><div class='loaded'>&nbsp;</div></div>
@@ -48,146 +30,307 @@
                     </div>
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="dashboard.html" class=""><font color="#162D3D"><b><strong>My Websites</strong></b></font></a></li>
-                            <li><a href="alltemplates.html" class=""><font color="#162D3D"><b><strong>Create new website</strong></b></font></a></li>
-                            <li><a href="#" class=""><font color="#162D3D"><b><strong>Support</strong></b></font></a></li>
-                            <li><a href="#" class=""><font color="#162D3D"><b><strong>Account</strong></b></font></a></li>
+                            <li><a href="#works" class="" style="font-weight: bold; font-size: 15px; color: #162D3D; text-decoration: none; text-align: center; vertical-align: middle; line-height: 25px;">Features</a></li>
+                            <li><a href="#description_second" class="" style="font-weight: bold; font-size: 15px; color: #162D3D; text-decoration: none; text-align: center; vertical-align: middle; line-height: 25px;">Explore</a></li>
+                            <li><a href="#pricing" class="" style="font-weight: bold; font-size: 15px; color: #162D3D; text-decoration: none; text-align: center; vertical-align: middle; line-height: 25px;">Subscriptions</a></li>
+                            <li><a href="templates.html" class="" style="font-weight: bold; font-size: 15px; color: #162D3D; text-decoration: none; text-align: center; vertical-align: middle; line-height: 25px;">Templates</a></li>
+                            <li><a href="#message" class="" style="font-weight: bold; font-size: 15px; color: #162D3D; text-decoration: none; text-align: center; vertical-align: middle; line-height: 25px;">Support</a></li>
                         </ul>
 
                     </div>
                 </div>
             </div> <!-- end of navbar -->
         </header>
-    <section id="fh5co-work" data-section="work">
-        <div class="container">
-            <div class="row">
-                    <h2 class="to-animate"><font color="#FFFFFF">My Websites</font></h2>
-            </div>
-            <div class="row row-bottom-padded-sm" id="templaterow">
-            </div>
-        </div>
-    </section>
-    <script>
-    GenerateRows();
-    function GenerateRows()
-    {
-        $.ajax({
-            url: 'api/getMyWebsites?Email=' + sessionStorage.getItem('email'),
-            headers: { 'token': sessionStorage.getItem('token'), 'Email': sessionStorage.getItem('email')},
-            type: 'GET',
-            success: function(response) {
-                console.log("Here is the response " + JSON.stringify(response));
-                var status = response['status'];
-                if(status == 200)
-                {
-                    var results = JSON.parse(response['result']);
-                    var templaterow = document.getElementById("templaterow");
-                    var NumberOfRows = 9;
-                    var WhichPage = sessionStorage.getItem('WhichPage');
-                    if (WhichPage == null)
-                    {
-                        WhichPage = 1;
-                    }
-                    if (WhichPage == 4)
-                    {
-                        NumberOfRows = 6;
-                    }
-                    var CalculationNum = (WhichPage-1)*9;
-                    var TotalNum = 0;
-                    console.log(results.length);
-                    if (results.length < NumberOfRows)
-                    {
-                        NumberOfRows = results.length
-                    }
-                    if (NumberOfRows)
-                    {
-                        sessionStorage.setItem('NumOfWebsites', NumberOfRows+1);
-                    }
-                    else
-                    {
-                        sessionStorage.setItem('NumOfWebsites', 1);
-                    }
-                     for(count = 0; count < NumberOfRows; count++)
-                     {
-                        TotalNum = results[count]['ID'];
-                        var div = document.createElement("div");
-                        div.className = 'col-md-4 col-sm-6 col-xxs-12';
-                        var a = document.createElement("a");
-                        a.className = 'fh5co-project-item image-popup to-animate';
-                        //a.href = "Templates/" + TotalNum + "/index.html";
-                        var img = document.createElement("img");
-                        img.src = "images/Templates/" + TotalNum + ".png";
-                        img.className = "img-responsive";
-                         var createClickHandler = 
-                            function(row) 
-                            {
-                                return function() 
-                                { 
-                                    console.log("row clicked " + row);
-                                    sessionStorage.setItem('EditingPage', (row+1));
-                                    sessionStorage.setItem('PageName', document.getElementById('Project'+row).innerHTML);
-                                    //document.location = "Templates/" + (row+1) + "/index.html";
-                                    document.location = "siteInfo.html";
-                                };
-                            };        
-                         img.onclick = createClickHandler(count);
-                        var Innerdiv = document.createElement("div");
-                        Innerdiv.className = 'fh5co-text';
-                        var button = document.createElement("input");
-                        button.value = 'Edit';
-                        button.setAttribute("style", "background-color: #47AFD0; float: right; width:80px; color: #ffffff; border: 2px solid; border-radius: 25px; margin-bottom: 10px;");
-                        button.type = "button";
-                         var createClickHandler = 
-                            function(row) 
-                            {
-                                return function() 
-                                { 
-                                    console.log("row clicked " + document.getElementById('Project'+row).innerHTML);
-                                    sessionStorage.setItem('EditingPage', (row+1));
-                                    sessionStorage.setItem('PageName', document.getElementById('Project'+row).innerHTML);
-                                    document.location = "siteInfo.html";
-                                };
-                            };        
-                         button.onclick = createClickHandler(count);
-                        var h2 = document.createElement("h2");
-                        if (results[count]['webname'])
-                        {
-                            h2.innerHTML = results[count]['webname'];
-                        }
-                        else
-                        {
-                            h2.innerHTML = 'Project ' + TotalNum;
-                        }
-                        h2.id = "Project" + count;
-                        var span = document.createElement("span");
-                        span.innerHTML = 'Branding';
-                        Innerdiv.appendChild(h2);
-                        Innerdiv.appendChild(span);
-                        Innerdiv.appendChild(button);
-                        a.appendChild(img);
-                        a.appendChild(Innerdiv);
-                        div.appendChild(a);
-                        if (count == 2 || count == 4 || count == 6 || count == 8)
-                        {
-                            var Extradiv = document.createElement("div");
-                            Extradiv.className = 'clearfix visible-sm-block';
-                            templaterow.appendChild(Extradiv);
-                        }
-                        templaterow.appendChild(div);
-                     }
-                }
-                else if (status == 404)
-                {
-                    var templaterow = document.getElementById("templaterow");
-                    var p = document.createElement("p");
-                    p.innerHTML = "No websites found";
-                    templaterow.appendChild(p);
 
-                }
-            }
-        });
-    }
-    </script>
+        <section id="home" style="height: 800px;">
+            <div id="bgimage" class="header-image">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-sm-12 col-xs-12 hmheading-text wow zoomIn" data-wow-duration=".5s">
+                                <h1 style="font-weight: bold; font-size: 30px; color: #162D3D; text-decoration: none; text-align: center; vertical-align: middle; line-height: 25px;">Create Your Own Amazing Website</h1>
+                                <p class="bannerDescription" style="font-weight: bold; font-size: 25px; color: #162D3D; text-decoration: none; text-align: center; vertical-align: middle; line-height: 25px;">It’s free and will always be free.</p>
+                          
+                                <a href="SignIn.html" class="btn" style="font-weight: bold; font-size: 17spx; color: #162D3D; text-decoration: none; text-align: center; vertical-align: middle; line-height: 25px; background-color: #ffffff; box-shadow: 3px 3px 3px 3px #888888;">Start Now</a>
+                        </div>
+
+                    </div> <!-- end of row -->
+                </div> 
+
+            </div>
+        </section>
+        <section id="works" class="center-content">
+            <div class="container">
+                <div class="row">
+                    <div class="works_content text-center">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="single_works_text wow fadeInLeft" data-wow-duration=".5s">
+                                <i class="fa fa-code-fork"></i>
+                                <h3>Clean and Responsive</h3>
+                                <p>It allows you to create responsive wesbite</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="single_works_text wow fadeInLeft" data-wow-duration=".8s">
+                                <i class="fa fa-cube"></i>
+                                <h3>Easy to use</h3>
+                                <p>It provides you with simple interface and easy to use features</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="single_works_text wow fadeInLeft" data-wow-duration="1.2s">
+                                <i class="fa fa-database"></i>
+                                <h3>Free</h3>
+                                <p>It is free and will always be free. For the first time ever, you can create your website without paying a penny</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="single_works_text wow fadeInLeft" data-wow-duration="1.5s">
+                                <i class="fa fa-magic"></i>
+                                <h3>Features</h3>
+                                <p>It supports you with all the features you need to create your website from a to z</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="single_works_text wow fadeInLeft" data-wow-duration="1.9s">
+                                <i class="fa fa-rocket"></i>
+                                <h3>Design Free</h3>
+                                <p>It gives you the freedom to create your own design</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="single_works_text wow fadeInLeft" data-wow-duration="2.3s">
+                                <i class="fa fa-crop"></i>
+                                <h3>Customizable</h3>
+                                <p>It allows you to customize your website to your needs</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="single_works_text wow fadeInLeft" data-wow-duration="2.6s">
+                                <i class="fa fa-server"></i>
+                                <h3>Templates Support</h3>
+                                <p>It provides you with templates to choose from</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="single_works_text wow fadeInLeft" data-wow-duration="2.9s">
+                                <i class="fa fa-shield"></i>
+                                <h3>24/7 Support</h3>
+                                <p>We support our customers 24/7. So if you have a question send us an email or go to the support section</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Description Section -->
+
+        <section id="descriotion">
+            <div class="container">
+                <div class="row main_description">
+                    <div class="col-sm-6 col-xs-12">
+                        <div class="left_desc_img center-content wow fadeInLeft" data-wow-duration="1.5s">
+                            <img src="images/SideImage1.png" alt="" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="right_desc_text top-margin wow fadeIn" data-wow-duration="1.5s">
+                            <h1>Create Your Own Customized Website</h1>
+                            <p>You will love how fast you can create your website using our platform. It will only take you couple minutes to publish your website. This is how easy we made it for you to create your amazing website</p>
+
+                            <div class="right_desc_bottom_text">
+                                <div class="right_single_bottom_text">
+                                    <i class="fa fa-server"></i>
+                                    <div class="right_bottom_description">
+                                        <h6 style="padding-top: 7px; padding-left: 10px;">First Choose a template to edit</h6>
+                                    </div>
+                                </div>
+
+                                <div class="right_single_bottom_text">
+                                    <i class="fa fa-crop"></i>
+                                    <div class="right_bottom_description">
+                                        <h6 style="padding-top: 7px; padding-left: 10px;">Then Customize your website to your needs</h6>
+                                    </div>
+                                </div>
+
+                                <div class="right_single_bottom_text">
+                                    <i class="fa fa-file-text"></i>
+                                    <div class="right_bottom_description">
+                                        <h6 style="padding-top: 7px; padding-left: 10px;">Then save your changes</h6>
+                                    </div>
+                                </div>
+
+                                <div class="right_single_bottom_text">
+                                    <i class="fa fa-dribbble"></i>
+                                    <div class="right_bottom_description">
+                                        <h6 style="padding-top: 7px; padding-left: 10px;">Now you can publish your website</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Description Second Section -->
+
+        <section id="description_second">
+            <div class="container">
+                <div class="row">
+                    <div class="main_description_second_contant">
+                        <div class="col-md-6 col-sm-6 wow fadeIn" data-wow-duration="1.5s">
+                            <div class="second_heading_text top-margin">
+                                <h1>Create Your Website Without Any Limits</h1>
+                                <p>Get advanced capabilities with all our design features</p>
+                            </div>
+
+                            <div class="second_bottom_text">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="second_single_text">
+                                            <i class="fa fa-server"></i>
+                                            <div class="right_bottom_description">
+                                                <h6>Set up your own database collections</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="second_single_text">
+                                            <i class="fa fa-code-fork"></i>
+                                            <div class="right_bottom_description">
+                                                <h6>Build content for your website</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="second_single_text">
+                                            <i class="fa fa-cube"></i>
+                                            <div class="right_bottom_description">
+                                                <h6>Add and customize elements</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="second_single_text">
+                                            <i class="fa fa-dribbble"></i>
+                                            <div class="right_bottom_description">
+                                                <h6>Add personalized domain</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-6 col-sm-6">
+                            <div class="right_desc_img center-content wow fadeInRight" data-wow-duration="1.5s">
+                                <img src="images/SideImage2.png" alt="" />
+								
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- message section -->
+
+        <section id="message" style="background-color: #F9F9F9;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="message_content">
+                            <div class="message_heading_text center-content wow zoomIn" data-wow-duration="1s">
+                                <h2 style="font-weight: bold; font-size: 30px; color: #162D3D; text-decoration: none; text-align: center; vertical-align: middle; line-height: 25px;">Get in Touch</h2>
+                                <p style="font-weight: bold; font-size: 20px; color: #162D3D; text-decoration: none; text-align: center; vertical-align: middle; line-height: 25px;">Feel free to contact us anytime, we will get back to you in 24 hours.</p>
+                            </div>
+
+                            <form action="#" id="formid" class="wow fadeIn" data-wow-duration="2s">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="name" placeholder="first name" required="">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input type="email" class="form-control" name="email" placeholder="Email" required="">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="Subject">
+                                    </div> <!-- end of form-group -->
+
+                                    <div class="form-group">
+                                        <textarea class="form-control" name="message" rows="8" placeholder="Message"></textarea>
+                                    </div>
+
+                                    <div class="center-content">
+                                        <input type="submit" value="Submit" class="btn larg-btn" style="font-weight: bold; font-size: 17px; color: #162D3D; text-decoration: none; text-align: center; vertical-align: middle; line-height: 25px; background-color: #ffffff; border-radius: 20px; box-shadow: 3px 3px 3px 3px #888888;">
+                                    </div>
+                                </div>
+                            </form>			
+                        </div>
+                    </div>
+                </div>
+
+
+            </div> <!-- end of container -->
+        </section>
+
+
+        <footer id="footer" class="center-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="socail_bookmark">
+                            <a href=""><i class="fa fa-twitter"></i></a>
+                            <a href=""><i class="fa fa-facebook"></i></a>
+                            <a href=""><i class="fa fa-linkedin"></i></a>
+                            <a href=""><i class="fa fa-google-plus"></i></a>
+                            <a href=""><i class="fa fa-instagram"></i></a>
+                            <a href=""><i class="fa fa-pinterest-p"></i></a>
+                            <a href=""><i class="fa fa-dribbble"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+
+
+        <!-- START SCROLL TO TOP  -->
+
+        <div class="scrollup">
+            <a href="#"><i class="fa fa-chevron-up"></i></a>
+        </div>
+
+
+
+
+
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="js/jquery/jquery.js"></script>
+
+        <script src="js/script.js"></script>
+
+
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="js/bootstrap/bootstrap.min.js"></script>
+        <script src="js/fancybox/jquery.fancybox.pack.js"></script>
+        <script src="js/nivo-lightbox/nivo-lightbox.min.js"></script>
+        <script src="js/owl-carousel/owl.carousel.min.js"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBL6gbhsnCEt4FS9D6BBl3mZO1xy-NcwpE&sensor=false"></script>
+        <script src="js/jquery-easing/jquery.easing.1.3.js"></script>
+        <script src="js/superslide/jquery.superslides.js"></script>
+        <script src="js/wow/wow.min.js"></script>
 
 
     </body>
