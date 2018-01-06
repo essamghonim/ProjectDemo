@@ -38,7 +38,7 @@
         <script src="js/wow/wow.min.js"></script>
     </head>
     <body>
-        <div class='preloader'><div class='loaded'>&nbsp;</div></div>
+		<div class='preloader'><div class='loaded'>&nbsp;</div></div>
         <header id="home" class="header navbar-fixed-top">
             <div class="navbar navbar-default main-menu">
 
@@ -58,26 +58,134 @@
                 </div>
             </div> <!-- end of navbar -->
         </header>
-    <section id="fh5co-work" data-section="work" style="height: 1000px;">
+    <section id="fh5co-work" data-section="work">
         <div class="container">
             <div class="row">
-                    <h2 class="to-animate" style="color: #ffffff; font-weight: bold; font-size: 35px; float : left;">Domain Address</h2>
+                    <h2 class="to-animate"><font color="#FFFFFF">My Websites</font></h2>
             </div>
-            <div class="row row-bottom-padded-sm">
-                    <input type="text" name="" value="www.lightsomeapps.com" style="width: 430px; border-radius: 10px; background-color: #ffffff; color: #162D3D; height: 60px; padding-left: 30px;">
-                    <button type="submit" style="background-color: #ffffff; width:200px; color: #162D3D; border-radius: 25px; margin-left: 10px; font-weight: bold; font-size: 16px; float : left; margin-top: 10px; border: 0px; height: 40px; margin-top: 60px;" onclick="Cancel()">Cancel</button>
-                    <button type="submit" style="background-color: #ffffff; width:200px; color: #162D3D; border-radius: 25px; margin-left: 10px; font-weight: bold; font-size: 16px; float : left; margin-top: 10px; border: 0px; height: 40px; margin-top: 60px;" onclick="RenameSite()">Connect Domain</button>
+            <div class="row row-bottom-padded-sm" id="templaterow">
             </div>
         </div>
     </section>
     <script>
-    function RenameSite()
+    GenerateRows();
+    function GenerateRows()
     {
-        
-    }
-    function Cancel()
-    {
-        document.location = "siteInfo.html";
+        $.ajax({
+            url: 'api/getMyWebsites?Email=' + sessionStorage.getItem('email'),
+            headers: { 'token': sessionStorage.getItem('token'), 'Email': sessionStorage.getItem('email')},
+            type: 'GET',
+            success: function(response) {
+                console.log("Here is the response " + JSON.stringify(response));
+                var status = response['status'];
+                if(status == 200)
+                {
+                    var results = JSON.parse(response['result']);
+                    var templaterow = document.getElementById("templaterow");
+                    var NumberOfRows = 9;
+                    var WhichPage = sessionStorage.getItem('WhichPage');
+                    if (WhichPage == null)
+                    {
+                        WhichPage = 1;
+                    }
+                    if (WhichPage == 4)
+                    {
+                        NumberOfRows = 6;
+                    }
+                    var CalculationNum = (WhichPage-1)*9;
+                    var TotalNum = 0;
+                    console.log(results.length);
+                    if (results.length < NumberOfRows)
+                    {
+                        NumberOfRows = results.length
+                    }
+                    if (NumberOfRows)
+                    {
+                        sessionStorage.setItem('NumOfWebsites', NumberOfRows+1);
+                    }
+                    else
+                    {
+                        sessionStorage.setItem('NumOfWebsites', 1);
+                    }
+                     for(count = 0; count < NumberOfRows; count++)
+                     {
+                        TotalNum = results[count]['ID'];
+                        var div = document.createElement("div");
+                        div.className = 'col-md-4 col-sm-6 col-xxs-12';
+                        var a = document.createElement("a");
+                        a.className = 'fh5co-project-item image-popup to-animate';
+                        //a.href = "Templates/" + TotalNum + "/index.html";
+                        var img = document.createElement("img");
+                        img.src = "images/Templates/" + TotalNum + ".png";
+                        img.className = "img-responsive";
+                         var createClickHandler = 
+                            function(row) 
+                            {
+                                return function() 
+                                { 
+                                    console.log("row clicked " + row);
+                                    sessionStorage.setItem('EditingPage', (row+1));
+                                    sessionStorage.setItem('PageName', document.getElementById('Project'+row).innerHTML);
+                                    //document.location = "Templates/" + (row+1) + "/index.html";
+                                    document.location = "siteInfo.html";
+                                };
+                            };        
+                         img.onclick = createClickHandler(count);
+                        var Innerdiv = document.createElement("div");
+                        Innerdiv.className = 'fh5co-text';
+                        var button = document.createElement("input");
+                        button.value = 'Edit';
+                        button.setAttribute("style", "background-color: #47AFD0; float: right; width:80px; color: #ffffff; border: 2px solid; border-radius: 25px; margin-bottom: 10px;");
+                        button.type = "button";
+                         var createClickHandler = 
+                            function(row) 
+                            {
+                                return function() 
+                                { 
+                                    console.log("row clicked " + document.getElementById('Project'+row).innerHTML);
+                                    sessionStorage.setItem('EditingPage', (row+1));
+                                    sessionStorage.setItem('PageName', document.getElementById('Project'+row).innerHTML);
+                                    document.location = "siteInfo.html";
+                                };
+                            };        
+                         button.onclick = createClickHandler(count);
+                        var h2 = document.createElement("h2");
+                        if (results[count]['webname'])
+                        {
+                            h2.innerHTML = results[count]['webname'];
+                        }
+                        else
+                        {
+                            h2.innerHTML = 'Project ' + TotalNum;
+                        }
+                        h2.id = "Project" + count;
+                        var span = document.createElement("span");
+                        span.innerHTML = 'Branding';
+                        Innerdiv.appendChild(h2);
+                        Innerdiv.appendChild(span);
+                        Innerdiv.appendChild(button);
+                        a.appendChild(img);
+                        a.appendChild(Innerdiv);
+                        div.appendChild(a);
+                        if (count == 2 || count == 4 || count == 6 || count == 8)
+                        {
+                            var Extradiv = document.createElement("div");
+                            Extradiv.className = 'clearfix visible-sm-block';
+                            templaterow.appendChild(Extradiv);
+                        }
+                        templaterow.appendChild(div);
+                     }
+                }
+                else if (status == 404)
+                {
+                    var templaterow = document.getElementById("templaterow");
+                    var p = document.createElement("p");
+                    p.innerHTML = "No websites found";
+                    templaterow.appendChild(p);
+
+                }
+            }
+        });
     }
     </script>
 
