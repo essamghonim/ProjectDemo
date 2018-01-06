@@ -78,11 +78,11 @@ var app = express();
 var mountPath = process.env.PARSE_MOUNT || '/parse';
 app.use(mountPath, api);
 
-app.use(express.static(__dirname+'/public'));
-app.set('views', __dirname + '/public');
+app.use(express.static(__dirname+'/views'));
+app.set('views', __dirname + '/views');
 
 app.get('/', function(request, response) {
-  response.sendFile(__dirname + '/public/index.html');
+  response.sendFile(__dirname + '/views/index.html');
 });
 
 var port = process.env.PORT || 1337;
